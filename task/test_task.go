@@ -35,25 +35,24 @@ type JsonTestTask struct {
 	SData string
 }
 
-func NewJsonTestTask(data string) *JsonTask {
+func NewJsonTestTask(data string) *JsonTestTask {
 	test_task := &JsonTestTask{
 		Name:  "Json Test Task",
 		ID:    TaskIDJsonTest,
 		SData: data,
 	}
-	json_task := &JsonTask{
-		Data: test_task,
-	}
-	return json_task
+
+	return test_task
 }
 
 func RunJsonTestTask() {
 
 	testTask := NewJsonTestTask("I am data.")
-	redisTaskManager := NewRedisTaskManager("127.0.0.1", 6379, "test_task_queue")
-	b, _ := testTask.ToBytes()
-	fmt.Printf("task bytes: %s", b)
-	redisTaskManager.AddTask(b)
-	data, _ := redisTaskManager.GetTask()
-	fmt.Printf("get task, data=%s", data)
+	taskManager := NewRedisTaskManager("127.0.0.1", 6379, "test_task_queue")
+	taskPaser := NewJsonTaskParser()
+	task_helper := NewTaskHelper(taskManager, taskPaser)
+	task_helper.AddTask(testTask)
+	t := new(JsonTestTask)
+	task_helper.GetTask(t)
+	fmt.Printf("get task, data=%+v", t)
 }

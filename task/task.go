@@ -17,14 +17,43 @@ const (
 	AddTaskFail    = iota
 )
 
-type Task interface {
-	// TaskName() string
-	// TaskTypeID() int
-	FromBytes() error
-	ToBytes() ([]byte, error)
+type TaskParser interface {
+	FromBytes(bytes []byte, data interface{}) error
+	ToBytes(data interface{}) ([]byte, error)
 }
 
 type TaskManager interface {
 	GetTask() ([]byte, error)
 	AddTask([]byte) error
+}
+
+type TaskHelper struct {
+	taskManager TaskManager
+	taskParser  TaskParser
+}
+
+func NewTaskHelper(taskManager TaskManager, taskParser TaskParser) *TaskHelper {
+	helper := &TaskHelper{
+		taskManager: taskManager,
+		taskParser:  taskParser,
+	}
+	return helper
+}
+
+func (h *TaskHelper) GetTask(task interface{}) error {
+	data, err := h.taskManager.GetTask()
+	if err != nil {
+		return err
+	}
+	err = h.taskParser.FromBytes(data, task)
+	return err
+}
+
+func (h *TaskHelper) AddTask(task interface{}) error {
+	bytes, err := h.taskParser.ToBytes(task)
+	if err != nil {
+		return err
+	}
+	err = h.taskManager.AddTask(bytes)
+	return err
 }

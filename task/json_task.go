@@ -4,24 +4,21 @@ import (
 	"encoding/json"
 )
 
-type JsonTask struct {
-	Data interface{}
+type JsonTaskParser struct {
 }
 
-func NewJsonTask(data interface{}) *JsonTask {
-	t := &JsonTask{
-		Data: data,
-	}
+func NewJsonTaskParser() *JsonTaskParser {
+	t := &JsonTaskParser{}
 	return t
 }
 
-func (t *JsonTask) FromBytes(bytes []byte) error {
-	err := json.Unmarshal(bytes, t.Data)
+func (t *JsonTaskParser) FromBytes(bytes []byte, data interface{}) error {
+	err := json.Unmarshal(bytes, data)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func (t *JsonTask) ToBytes() ([]byte, error) {
-	return json.Marshal(t.Data)
+func (t *JsonTaskParser) ToBytes(data interface{}) ([]byte, error) {
+	return json.Marshal(data)
 }
