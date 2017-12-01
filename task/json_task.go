@@ -5,31 +5,23 @@ import (
 )
 
 type JsonTask struct {
-	Name string
-	ID   int
+	Data interface{}
 }
 
-func NewJsonTask() *JsonTask {
+func NewJsonTask(data interface{}) *JsonTask {
 	t := &JsonTask{
-		Name: "JsonTask",
-		ID:   TaskIDJson,
+		Data: data,
 	}
 	return t
 }
 
-func (t *JsonTask) TaskName() string {
-	return t.Name
-}
-func (t *JsonTask) TaskTypeID() int {
-	return t.ID
-}
 func (t *JsonTask) FromBytes(bytes []byte) error {
-	err := json.Unmarshal(bytes, t)
+	err := json.Unmarshal(bytes, t.Data)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 func (t *JsonTask) ToBytes() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(t.Data)
 }
