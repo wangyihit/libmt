@@ -12,13 +12,13 @@ func NewJsonTaskParser() *JsonTaskParser {
 	return t
 }
 
-func (t *JsonTaskParser) FromBytes(bytes []byte, data interface{}) error {
-	err := json.Unmarshal(bytes, data)
+func (t *JsonTaskParser) FromBytes(bytes []byte, task interface{}) error {
+	err := json.Unmarshal(bytes, task)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func (t *JsonTaskParser) ToBytes(data interface{}) ([]byte, error) {
-	return json.Marshal(data)
+func (t *JsonTaskParser) ToBytes(task interface{}) ([]byte, error) {
+	return json.Marshal(task)
 }
