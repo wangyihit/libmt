@@ -1,0 +1,23 @@
+<seelog type="asynctimer" asyncinterval="5000000" minlevel="info" maxlevel="error">
+    <exceptions>
+        <exception funcpattern="*main.test*Something*" minlevel="info"/>
+        <exception filepattern="*main.go" minlevel="error"/>
+    </exceptions>
+    <outputs formatid="main">
+		<console />
+		<!-- filename, maxsize, maxrolls, -->
+        <rollingfile formatid="main" type="size" filename="./log/log" maxsize="10000000" maxrolls="14" />
+		<!-- for local udp es log
+		<conn formatid="es_udp" net="udp" addr="127.0.0.1:9003" tls="false" insecureskipverify="false" />
+		-->
+        <filter levels="error,warn">
+            <file path="./log/log.error" />
+        </filter>
+    </outputs>
+    <formats>
+		<!-- %s for host -->
+        <format id="main" format="%s:%%Date/%%Time;%%LEV;%%Msg;%%File:%%Line%%n"/>
+		<!-- sender -->
+		<format id="es_udp" format="sender=sample.conf,log_time=%%Date/%%Time,level=%%LEV,file=%%File,line=%%Line,%%Msg%%n"/>
+    </formats>
+</seelog>
