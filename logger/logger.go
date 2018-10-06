@@ -10,13 +10,13 @@ import (
 
 func InitLogger(confPath string) error {
 	defer log.Flush()
-	hostname, _ := os.Hostname()
-	template, err := ioutil.ReadFile(confPath)
+	hostName, _ := os.Hostname()
+	confTemplate, err := ioutil.ReadFile(confPath)
 	if err != nil {
 		return err
 	}
-	data := string(template[:])
-	config := fmt.Sprintf(data, hostname, hostname)
+	data := string(confTemplate[:])
+	config := fmt.Sprintf(data, hostName, hostName)
 	logger, _ := log.LoggerFromConfigAsBytes([]byte(config))
 	log.ReplaceLogger(logger)
 	return nil
