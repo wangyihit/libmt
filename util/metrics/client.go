@@ -5,7 +5,7 @@ import (
 	"net"
 	"strconv"
 
-	"metrics_message"
+	metrics_message "terrorblade/tmessage"
 
 	"lib.mt/util/thrift/serializer"
 )
@@ -38,6 +38,46 @@ func (c *Client) EmitMessage(msg *metrics_message.TMessage) {
 }
 
 func (c *Client) EmitTimer(t *Timer) {
+	c.EmitTimerWithTags(t, "")
+}
+
+func (c *Client) EmitTimerWithPrefix(t *Timer, prefix string) {
+	t.Name = fmt.Sprintf("%s.%s", prefix, t.Name)
+	c.EmitTimer(t)
+}
+func (c *Client) EmitCounter(name string, count int64) {
+	m := metrics_message.NewTMessage()
+	m.MetricsType = metrics_message.MetricsType_Gauges
+	m.Param = make(map[string]string)
+	m.Name = name
+	counter := strconv.FormatInt(count, 10)
+	m.Param["count"] = counter
+	c.EmitMessage(m)
+}
+
+func (c *Client) EmitCounterWithTags(name string, count int64, tags string) {
+	m := metrics_message.NewTMessage()
+	m.MetricsType = metrics_message.MetricsType_Counter
+	m.Param = make(map[string]string)
+	m.Name = name
+	counter := strconv.FormatInt(count, 10)
+	m.Param["count"] = counter
+	m.Param["tags"] = tags
+	c.EmitMessage(m)
+}
+
+func (c *Client) EmitGaugeWithTags(name string, count int64, tags string) {
+	m := metrics_message.NewTMessage()
+	m.MetricsType = metrics_message.MetricsType_Gauges
+	m.Param = make(map[string]string)
+	m.Name = name
+	counter := strconv.FormatInt(count, 10)
+	m.Param["count"] = counter
+	m.Param["tags"] = tags
+	c.EmitMessage(m)
+}
+
+func (c *Client) EmitTimerWithTags(t *Timer, tags string) {
 	m := metrics_message.NewTMessage()
 	m.MetricsType = metrics_message.MetricsType_Timer
 	m.Param = make(map[string]string)
@@ -45,19 +85,9 @@ func (c *Client) EmitTimer(t *Timer) {
 
 	count := fmt.Sprintf("%d", t.End-t.Start)
 	m.Param["count"] = count
-	c.EmitMessage(m)
-}
-func (c *Client) EmitTimerWithPrefix(t *Timer, prefix string) {
-	t.Name = fmt.Sprintf("%s.%s", prefix, t.Name)
-	c.EmitTimer(t)
-}
-func (c *Client) EmitCounter(name string, count int64) {
-	m := metrics_message.NewTMessage()
-	m.MetricsType = metrics_message.MetricsType_Counter
-	m.Param = make(map[string]string)
-	m.Name = name
-	counter := strconv.FormatInt(count, 10)
-	m.Param["count"] = counter
+	if tags != "" {
+		m.Param["tags"] = tags
+	}
 	c.EmitMessage(m)
 }
 
