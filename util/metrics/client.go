@@ -47,7 +47,7 @@ func (c *Client) EmitTimerWithPrefix(t *Timer, prefix string) {
 }
 func (c *Client) EmitCounter(name string, count int64) {
 	m := metrics_message.NewTMessage()
-	m.MetricsType = metrics_message.MetricsType_Gauges
+	m.MetricsType = metrics_message.MetricsType_Counter
 	m.Param = make(map[string]string)
 	m.Name = name
 	counter := strconv.FormatInt(count, 10)
