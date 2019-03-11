@@ -5,7 +5,7 @@ import (
 	"net"
 	"strconv"
 
-	metrics_message "terrorblade/tmessage"
+	metrics_message "lib.mt/util/metrics/tmessage"
 
 	"lib.mt/util/thrift/serializer"
 )
