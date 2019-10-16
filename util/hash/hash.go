@@ -2,6 +2,7 @@ package hash
 
 import (
 	"crypto/md5"
+	"encoding/base64"
 	"encoding/binary"
 	"fmt"
 )
@@ -32,4 +33,17 @@ func Md5int32Array(v []uint32) []byte {
 	hash := md5.Sum(bs)
 	fmt.Printf("%x\n", bs)
 	return hash[0:]
+}
+
+func B64ToBytes(s []byte) ([]byte, error) {
+	// func (enc *Encoding) Decode(dst, src []byte) (n int, err error)
+	var b []byte
+	_, err := base64.StdEncoding.Decode(b, s)
+	return b, err
+}
+
+func BytesToB64(s []byte) []byte {
+	var b []byte
+	base64.StdEncoding.Encode(b, s)
+	return b
 }
