@@ -1,6 +1,11 @@
 package task_queue
 
 type ITaskInterface interface {
-	Add(task interface{}) error
-	Get() (interface{}, error)
+	Add(task []byte) error
+	Get() ([]byte, error)
+}
+
+type ITaskItem interface {
+	FromBytes(bytes []byte) error
+	ToBytes() ([]byte, error)
 }
