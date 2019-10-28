@@ -1,8 +1,8 @@
 package main
 
 import (
-	"lib.mt/util/log"
-	"lib.mt/util/log/loggers"
+	"libmt/util/log"
+	"libmt/util/log/loggers"
 )
 
 func main() {

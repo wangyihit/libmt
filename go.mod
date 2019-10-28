@@ -1,4 +1,4 @@
-module lib.mt
+module libmt
 
 go 1.12
 

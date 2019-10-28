@@ -5,9 +5,9 @@ import (
 	"net"
 	"strconv"
 
-	metrics_message "lib.mt/util/metrics/tmessage"
+	metrics_message "libmt/util/metrics/tmessage"
 
-	"lib.mt/util/thrift/serializer"
+	"libmt/util/thrift/serializer"
 )
 
 type Client struct {
