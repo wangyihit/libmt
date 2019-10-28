@@ -1,4 +1,4 @@
-// module libmt
+module  github.com/wangyihit/libmt 
 
 go 1.12
 
