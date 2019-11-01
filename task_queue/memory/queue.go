@@ -2,7 +2,7 @@ package memory
 
 import (
 	"github.com/pkg/errors"
-	"libmt/task_queue"
+	"github.com/wangyihit/libmt/task_queue"
 )
 
 type MemoryQueue struct {

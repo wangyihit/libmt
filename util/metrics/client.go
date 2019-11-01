@@ -1,13 +1,14 @@
 package metrics
 
+/*
 import (
 	"fmt"
 	"net"
 	"strconv"
 
-	metrics_message "libmt/util/metrics/tmessage"
+	metrics_message "github.com/wangyihit/libmt/util/metrics/tmessage"
 
-	"libmt/util/thrift/serializer"
+	"github.com/wangyihit/libmt/util/thrift/serializer"
 )
 
 type Client struct {
@@ -95,3 +96,4 @@ func (c *Client) EmitMCounterWithPrefix(name string, prefix string, count int64)
 	name = fmt.Sprintf("%s.%s", prefix, name)
 	c.EmitCounter(name, count)
 }
+*/

@@ -3,11 +3,11 @@ package main
 import (
 	"log"
 
-	"libmt/task_queue"
-	"libmt/task_queue/redis_queue"
-	"libmt/task_queue/task"
-	"libmt/util/options"
-	"libmt/util/options/redis_options"
+	"github.com/wangyihit/libmt/task_queue"
+	"github.com/wangyihit/libmt/task_queue/redis_queue"
+	"github.com/wangyihit/libmt/task_queue/task"
+	"github.com/wangyihit/libmt/util/options"
+	"github.com/wangyihit/libmt/util/options/redis_options"
 )
 
 func main() {
