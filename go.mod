@@ -18,6 +18,7 @@ require (
 	github.com/onsi/gomega v1.7.0 // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v1.2.1
+	golang.org/x/net v0.0.0-20191101175033-0deb6923b6d9 // indirect
 	gopkg.in/bsm/ratelimit.v1 v1.0.0-20160220154919-db14e161995a // indirect
 	gopkg.in/olivere/elastic.v5 v5.0.82
 	gopkg.in/redis.v3 v3.6.4
