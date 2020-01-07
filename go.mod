@@ -3,10 +3,10 @@ module github.com/wangyihit/libmt
 go 1.12
 
 require (
-	git.apache.org/thrift.git v0.13.0
 	github.com/Shopify/sarama v1.24.0
 	github.com/adjust/rmq v1.0.0 // indirect
 	github.com/adjust/uniuri v0.0.0-20130923163420-498743145e60 // indirect
+	github.com/apache/thrift v0.13.0
 	github.com/bsm/sarama-cluster v2.1.15+incompatible
 	github.com/cihub/seelog v0.0.0-20170130134532-f561c5e57575
 	github.com/deckarep/golang-set v1.7.1

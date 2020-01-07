@@ -1,23 +1,18 @@
 package serializer
 
-import "git.apache.org/thrift.git/lib/go/thrift"
-// TODO: new thrift version need context, these functions need update
+import (
+	"context"
+
+	"github.com/apache/thrift/lib/go/thrift"
+)
+
 func BytesToThriftObject(bytes []byte, i thrift.TStruct) error {
-/*
-	memoryBuffer := thrift.NewTMemoryBufferLen(1024 * 1024 * 10)
-	protocol := thrift.NewTBinaryProtocolFactoryDefault().GetProtocol(memoryBuffer)
-	deSerializer := &thrift.TDeserializer{
-		Transport: memoryBuffer,
-		Protocol:  protocol,
-	}
-	deSerializer.Transport.Close()
+	deSerializer := thrift.NewTDeserializer()
 	return deSerializer.Read(i, bytes)
-*/
-	return nil
 }
 
 func ThriftObjectToBytes(i thrift.TStruct) ([]byte, error) {
-	/*
+
 	memoryBuffer := thrift.NewTMemoryBufferLen(1024 * 1024 * 10)
 	protocol := thrift.NewTBinaryProtocolFactoryDefault().GetProtocol(memoryBuffer)
 	serializer := &thrift.TSerializer{
@@ -25,7 +20,6 @@ func ThriftObjectToBytes(i thrift.TStruct) ([]byte, error) {
 		Protocol:  protocol,
 	}
 	serializer.Transport.Close()
-	return serializer.Write(i)
-*/
-	return nil, nil
+	return serializer.Write(context.TODO(), i)
+
 }
