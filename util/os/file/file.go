@@ -2,6 +2,7 @@ package file
 
 import (
 	"io/ioutil"
+	"os"
 )
 
 func Write(fileName string, bytes []byte) error {
@@ -11,4 +12,11 @@ func Write(fileName string, bytes []byte) error {
 
 func Read(fileName string) ([]byte, error) {
 	return ioutil.ReadFile(fileName)
+}
+
+func FileExist(fileName string) bool {
+	if _, err := os.Stat(fileName); os.IsNotExist(err) {
+		return false
+	}
+	return true
 }
