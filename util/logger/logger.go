@@ -43,10 +43,10 @@ func InitLogger(dir string, fileName string, loglevel int) error {
 		core := zapcore.NewTee(
 			ll.Core(), errorLogger.Core(),
 		)
-		zap.ReplaceGlobals(zap.New(core))
+		zap.ReplaceGlobals(zap.New(core, zap.AddCaller()))
 		return nil
 	}
-	zap.ReplaceGlobals(ll)
+	zap.ReplaceGlobals(ll.WithOptions(zap.AddCaller()))
 	return nil
 }
 func initLogger(logPath string, level zapcore.Level) *zap.Logger {
@@ -64,15 +64,15 @@ func initLogger(logPath string, level zapcore.Level) *zap.Logger {
 		Level:       zap.NewAtomicLevelAt(level),
 		OutputPaths: []string{logPath},
 		EncoderConfig: zapcore.EncoderConfig{
-			MessageKey: "M",
+			MessageKey: "msg",
 
-			LevelKey:    "L",
+			LevelKey:    "level",
 			EncodeLevel: zapcore.CapitalLevelEncoder,
 
-			TimeKey:    "T",
+			TimeKey:    "ts",
 			EncodeTime: TimeEncoder,
 
-			CallerKey:    "C",
+			CallerKey:    "file",
 			EncodeCaller: zapcore.ShortCallerEncoder,
 		},
 	}
@@ -86,5 +86,10 @@ func initLogger(logPath string, level zapcore.Level) *zap.Logger {
 					w,
 					level)
 			}))
-	return ll
+	hostname, err := os.Hostname()
+	if err != nil {
+		hostname = "empty"
+	}
+	loggerWithHost := ll.With(zap.String("host", hostname))
+	return loggerWithHost
 }
