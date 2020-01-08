@@ -49,6 +49,7 @@ func InitLogger(dir string, fileName string, loglevel int) error {
 	zap.ReplaceGlobals(ll.WithOptions(zap.AddCaller()))
 	return nil
 }
+
 func initLogger(logPath string, level zapcore.Level) *zap.Logger {
 	hook := lumberjack.Logger{
 		Filename:   logPath,
