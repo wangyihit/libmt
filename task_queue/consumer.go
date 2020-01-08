@@ -25,12 +25,13 @@ func NewConsumer(q ITaskQueue, worker IWorker, wg *sync.WaitGroup) *Consumer {
 	}
 	return c
 }
-func (c *Consumer) Sleep() {
+func (c *Consumer) sleep() {
 	time.Sleep(time.Second * time.Duration(c.sleepDuration))
 	if c.sleepDuration < 64 {
 		c.sleepDuration = c.sleepDuration * 2
 	}
 }
+
 func (c *Consumer) Start() {
 	if c.wg != nil {
 		defer c.wg.Done()
@@ -39,7 +40,7 @@ func (c *Consumer) Start() {
 		taskData, err := c.queue.Get()
 		if err != nil {
 			zap.L().Warn("Get task failed", zap.String("queue_info", c.queue.QueueInfo()))
-			c.Sleep()
+			c.sleep()
 			continue
 		}
 		c.worker.Run(taskData)
