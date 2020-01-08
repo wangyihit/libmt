@@ -19,7 +19,7 @@ const (
 func TimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format("2006-01-02 15:04:05.000"))
 }
-func InitLogger(dir string, fileName string, loglevel int) error {
+func InitLogger(dir string, fileName string, loglevel int, console bool) error {
 	err := os.MkdirAll(dir, 0755)
 	if err != nil {
 		return err
@@ -36,10 +36,10 @@ func InitLogger(dir string, fileName string, loglevel int) error {
 	default:
 		level = zap.InfoLevel
 	}
-	ll := initLogger(logPath, level)
+	ll := initLogger(logPath, level, console)
 
 	if level < zap.ErrorLevel {
-		errorLogger := initLogger(logPath+".err", zap.ErrorLevel)
+		errorLogger := initLogger(logPath+".err", zap.ErrorLevel, false)
 		core := zapcore.NewTee(
 			ll.Core(), errorLogger.Core(),
 		)
@@ -50,7 +50,7 @@ func InitLogger(dir string, fileName string, loglevel int) error {
 	return nil
 }
 
-func initLogger(logPath string, level zapcore.Level) *zap.Logger {
+func initLogger(logPath string, level zapcore.Level, console bool) *zap.Logger {
 	hook := lumberjack.Logger{
 		Filename:   logPath,
 		MaxSize:    128, // megabytes
@@ -59,11 +59,14 @@ func initLogger(logPath string, level zapcore.Level) *zap.Logger {
 		LocalTime:  true,
 		Compress:   false,
 	}
-
+	outputPaths := []string{logPath}
+	if console {
+		outputPaths = []string{logPath, "stdout"}
+	}
 	cfg := zap.Config{
 		Encoding:    "json",
 		Level:       zap.NewAtomicLevelAt(level),
-		OutputPaths: []string{logPath},
+		OutputPaths: outputPaths,
 		EncoderConfig: zapcore.EncoderConfig{
 			MessageKey: "msg",
 
