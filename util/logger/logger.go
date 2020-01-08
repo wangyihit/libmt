@@ -1,6 +1,8 @@
 package logger
 
 import (
+	"fmt"
+	"os"
 	"time"
 
 	"github.com/natefinch/lumberjack"
@@ -17,8 +19,12 @@ const (
 func TimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format("2006-01-02 15:04:05.000"))
 }
-func InitLogger(logPath string, loglevel int) {
-
+func InitLogger(dir string, fileName string, loglevel int) error {
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		return err
+	}
+	logPath := fmt.Sprintf("%s/%s", dir, fileName)
 	var level zapcore.Level
 	switch loglevel {
 	case LogLevelDebug:
@@ -38,9 +44,10 @@ func InitLogger(logPath string, loglevel int) {
 			ll.Core(), errorLogger.Core(),
 		)
 		zap.ReplaceGlobals(zap.New(core))
-		return
+		return nil
 	}
 	zap.ReplaceGlobals(ll)
+	return nil
 }
 func initLogger(logPath string, level zapcore.Level) *zap.Logger {
 	hook := lumberjack.Logger{
