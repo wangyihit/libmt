@@ -1,8 +1,9 @@
 package memory
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
-	"github.com/wangyihit/libmt/task_queue"
 )
 
 type MemoryQueue struct {
@@ -36,10 +37,6 @@ func (q *MemoryQueue) Get() (interface{}, error) {
 	}
 }
 
-func CreateMemoryTaskQueues(queueCount int, queueSize int) []task_queue.ITaskInterface {
-	qs := make([]task_queue.ITaskInterface, queueCount)
-	for i := 0; i < queueCount; i++ {
-		qs[i] = NewMemoryQueue(queueSize)
-	}
-	return qs
+func (q *MemoryQueue) QueueInfo() string {
+	return fmt.Sprintf("size=%d", q.size)
 }
