@@ -3,6 +3,7 @@ package disk_cache
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -26,6 +27,10 @@ func NewItemCache(cacaheRoot string, cacheID string) *ItemCache {
 
 func (ic *ItemCache) Root() string {
 	return ic.root
+}
+
+func (ic *ItemCache) FullPath(path ...string) string {
+	return fmt.Sprintf("%s/%s", ic.root, strings.Join(path, "/"))
 }
 
 func (ic *ItemCache) SubDir(name string) (string, error) {
