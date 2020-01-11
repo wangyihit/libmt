@@ -16,7 +16,7 @@ type ItemCache struct {
 func NewItemCache(cacaheRoot string, cacheID string) *ItemCache {
 	c := time.Now()
 	day := c.Day()
-	path := fmt.Sprint("%s/%02d/%s", cacaheRoot, day, cacheID)
+	path := fmt.Sprintf("%s/%02d/%s", cacaheRoot, day, cacheID)
 	ic := &ItemCache{
 		cacheID: cacheID,
 		day:     fmt.Sprintf("%02d", day),
