@@ -1,4 +1,4 @@
-package file_cache
+package disk_cache
 
 import (
 	"fmt"
@@ -42,14 +42,14 @@ func (ic *ItemCache) Clean() error {
 	return err
 }
 
-type FileCache struct {
+type DiskCache struct {
 	root        string
 	initialized bool
 }
 
-func NewFileCache(root string) *FileCache {
+func NewDiskCache(root string) *DiskCache {
 
-	fc := &FileCache{
+	fc := &DiskCache{
 		root:        root,
 		initialized: false,
 	}
@@ -63,7 +63,7 @@ func fileExist(fileName string) bool {
 	return true
 }
 
-func (fc *FileCache) InitDirectory() error {
+func (fc *DiskCache) InitDirectory() error {
 	for i := 1; i <= 31; i++ {
 		path := fmt.Sprintf("%s/%02d", fc.root, i)
 		if !fileExist(path) {
@@ -77,11 +77,11 @@ func (fc *FileCache) InitDirectory() error {
 	return nil
 }
 
-func (fc *FileCache) Initialized() bool {
+func (fc *DiskCache) Initialized() bool {
 	return fc.initialized
 }
 
-func (fc *FileCache) CreateItemCache(cacheID string) (*ItemCache, error) {
+func (fc *DiskCache) CreateItemCache(cacheID string) (*ItemCache, error) {
 	itemCache := NewItemCache(fc.root, cacheID)
 	err := os.MkdirAll(itemCache.root, 0755)
 	if err != nil {
