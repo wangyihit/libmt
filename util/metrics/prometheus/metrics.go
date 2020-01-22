@@ -1,8 +1,11 @@
 package prometheus
 
 import (
+	"net/http"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/wangyihit/libmt/util/metrics"
 )
 
@@ -32,6 +35,7 @@ func (m *LocalMetrics) NewCounter(name string, labels map[string]string, help st
 	return localCounter
 }
 
+var Metrics *LocalMetrics
 var defaultTimerObjectives = map[float64]float64{0.5: 0.05, 0.9: 0.01, 0.99: 0.001}
 
 func (m *LocalMetrics) NewSummary(name string, labels []string, Objectives map[float64]float64, help string) metrics.ISummary {
@@ -49,4 +53,13 @@ func (m *LocalMetrics) NewSummary(name string, labels []string, Objectives map[f
 	prometheus.MustRegister(v)
 	localTimer := NewLocalTimer(v)
 	return localTimer
+}
+
+func Start(addr string) {
+	http.Handle("/metrics", promhttp.Handler())
+	_ = http.ListenAndServe(addr, nil)
+}
+
+func InitGlobal(namespace string, subsystem string) {
+	Metrics = NewLocalMetrics(namespace, subsystem)
 }
