@@ -35,6 +35,21 @@ func NewHostChechker() *HostChecker {
 	return c
 }
 
+type ProxyInfo struct {
+	Host string
+	Port int
+	Type int
+}
+
+func NewProxyHost(host string, port int, proxyType int) *ProxyInfo {
+	i := &ProxyInfo{
+		Host: host,
+		Port: port,
+		Type: proxyType,
+	}
+	return i
+}
+
 type HostCheckResult struct {
 	Status       int
 	ProxyStatus  int
