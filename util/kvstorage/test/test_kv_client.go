@@ -30,7 +30,7 @@ func testKV() {
 	fmt.Printf("image, Name=%s, exit=%+v\n", imgName, exist)
 	content := "test data"
 	testObjName := "test"
-	err = client.Put(testObjName, []byte(content), kvstorage.ContentTypeText)
+	err = client.Put(testObjName, []byte(content), kvstorage.ContentTypeText, true)
 	if err != nil {
 		fmt.Printf("put data error, msg=%s", err.Error())
 	} else {
