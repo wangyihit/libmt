@@ -55,28 +55,46 @@ func (m *Minio) Init() error {
 	return err
 }
 
-func (m *Minio) Put(objName string, data []byte, contentType string) error {
+func (m *Minio) Put(objName string, data []byte, contentType string, checkObjName bool) error {
+	if checkObjName == true {
+		exist, err := m.Exist(objName)
+		if err != nil {
+			return err
+		}
+		if exist == true {
+			return nil
+		}
+	}
 	reader := bytes.NewReader(data)
 	_, err := m.client.PutObject(m.bucket, objName, reader, int64(len(data)), minio.PutObjectOptions{ContentType: contentType})
 	return err
 }
 
-func (m *Minio) PutWithSha1Name(data []byte, contentType string) error {
+func (m *Minio) PutWithSha1Name(data []byte, contentType string, checkObjName bool) error {
 	objName := hash.Sha1Hex(data)
-	return m.Put(objName, data, contentType)
+	return m.Put(objName, data, contentType, checkObjName)
 }
 
-func (m *Minio) PutFile(objectName string, filePath string, contentType string) error {
+func (m *Minio) PutFile(objectName string, filePath string, contentType string, checkObjName bool) error {
+	if checkObjName == true {
+		exist, err := m.Exist(objectName)
+		if err != nil {
+			return err
+		}
+		if exist == true {
+			return nil
+		}
+	}
 	_, err := m.client.FPutObject(m.bucket, objectName, filePath, minio.PutObjectOptions{ContentType: contentType})
 	return err
 }
 
-func (m *Minio) PutFileWithSha1Name(filePath string, contentType string) error {
+func (m *Minio) PutFileWithSha1Name(filePath string, contentType string, checkObjName bool) error {
 	md5Hex, err := hash.MD5HexFile(filePath)
 	if err != nil {
 		return err
 	}
-	return m.PutFile(md5Hex, filePath, contentType)
+	return m.PutFile(md5Hex, filePath, contentType, checkObjName)
 }
 
 func (m *Minio) Exist(objName string) (bool, error) {
