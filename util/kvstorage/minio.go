@@ -6,6 +6,8 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/wangyihit/libmt/util/hash"
+
 	"github.com/pkg/errors"
 
 	"github.com/minio/minio-go/v6"
@@ -38,6 +40,13 @@ func NewMinio(endpoint string, accessKeyID string, secretAccessKey string, useSS
 	return m
 }
 
+func (m *Minio) contentType(s string) string {
+	if s == "" {
+		return "application/octet-stream"
+	}
+	return s
+}
+
 func (m *Minio) Init() error {
 	client, err := minio.New(m.endpoint, m.accessKeyID, m.secretAccessKey, m.useSSl)
 	if err == nil {
@@ -50,6 +59,24 @@ func (m *Minio) Put(objName string, data []byte, contentType string) error {
 	reader := bytes.NewReader(data)
 	_, err := m.client.PutObject(m.bucket, objName, reader, int64(len(data)), minio.PutObjectOptions{ContentType: contentType})
 	return err
+}
+
+func (m *Minio) PutWithSha1Name(data []byte, contentType string) error {
+	objName := hash.Sha1Hex(data)
+	return m.Put(objName, data, contentType)
+}
+
+func (m *Minio) PutFile(objectName string, filePath string, contentType string) error {
+	_, err := m.client.FPutObject(m.bucket, objectName, filePath, minio.PutObjectOptions{ContentType: contentType})
+	return err
+}
+
+func (m *Minio) PutFileWithSha1Name(filePath string, contentType string) error {
+	md5Hex, err := hash.MD5HexFile(filePath)
+	if err != nil {
+		return err
+	}
+	return m.PutFile(md5Hex, filePath, contentType)
 }
 
 func (m *Minio) Exist(objName string) (bool, error) {
@@ -81,6 +108,10 @@ func (m *Minio) Get(objName string) ([]byte, error) {
 		return nil, err
 	}
 	return bytes, nil
+}
+
+func (m *Minio) GetFile(objName string, filePath string) error {
+	return m.client.FGetObject(m.bucket, objName, filePath, minio.GetObjectOptions{})
 }
 
 func (m *Minio) ShareUrl(objName string, expires time.Duration) (string, error) {
