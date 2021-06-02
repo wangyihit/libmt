@@ -129,7 +129,7 @@ func (c *HostChecker) CheckProxy(proxyHost string, proxyPort int, proxyType int,
 	}
 	if resp.StatusCode != 200 {
 		hostCheckResult.Message = fmt.Sprintf("msg=check_proxy_connect_failed, host=%s, port=%d", proxyHost, proxyPort)
-		return hostCheckResultf
+		return hostCheckResult
 	}
 	end := time.Now().UnixNano() / 1000000
 	hostCheckResult.ReqDelay = end - start
