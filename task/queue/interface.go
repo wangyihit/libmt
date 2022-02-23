@@ -1,4 +1,4 @@
-package task_queue
+package queue
 
 type ITaskQueue interface {
 	Add(task []byte) error

@@ -9,7 +9,6 @@ require (
 	github.com/bsm/sarama-cluster v2.1.15+incompatible
 	github.com/cihub/seelog v0.0.0-20170130134532-f561c5e57575
 	github.com/deckarep/golang-set v1.7.1
-	github.com/garyburd/redigo v1.6.0
 	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/minio/minio-go/v6 v6.0.55
 	github.com/natefinch/lumberjack v2.0.0+incompatible
