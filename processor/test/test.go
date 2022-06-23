@@ -9,8 +9,10 @@ import (
 func main() {
 	fmt.Println("run")
 	jsProcessor := processor.NewJs()
-	jsCmd := "var a = 5; var result = a * a;"
-	res, err := jsProcessor.Run(jsCmd)
-	resStr := res.(string)
-	fmt.Printf("res=%s, err=%s", resStr, err)
+	jsCmd := "var a = 5; var result = a * a / 0;"
+	task := processor.NewTask()
+	task.Data = jsCmd
+	res, err := jsProcessor.Run(task)
+	resStr := res.GetData()
+	fmt.Printf("res=%s, err=%s\n", resStr, err)
 }
