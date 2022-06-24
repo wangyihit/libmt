@@ -10,6 +10,9 @@ type Processor interface {
 }
 
 var NewTask = processor.NewTask
+var NewHtmlProcessor = processor.NewHtmlBlock
+var NewHtmlEXtractResult_ = processor.NewHtmlEXtractResult_
+var NewItemField = processor.NewItemField
 
 func NewTaskResult_() *processor.TaskResult_ {
 	t := processor.NewTaskResult_()
