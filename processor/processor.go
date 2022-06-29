@@ -17,5 +17,6 @@ var NewItemField = processor.NewItemField
 func NewTaskResult_() *processor.TaskResult_ {
 	t := processor.NewTaskResult_()
 	t.Extra = make(map[string]string)
+    t.TaskStatus = processor.TaskStatus_SUCCESS
 	return t
 }
