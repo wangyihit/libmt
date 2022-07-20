@@ -19,11 +19,12 @@ func NewJs() *Js {
 }
 
 func (c *Js) Name() string {
-	return "Js"
+	return processor.JSTask
 }
 
-func (c *Js) Run(task *processor.Task) (*processor.TaskResult_, error) {
-	jsCmd := task.GetData()
+func (c *Js) Run(task *processor.TTask) (*processor.TTaskResult_, error) {
+    taskData := task.GetTaskData()
+	jsCmd := taskData.GetData()
 	c.vm.Run(jsCmd)
 	data, err := c.vm.Get("result")
 	if err != nil {
@@ -32,13 +33,13 @@ func (c *Js) Run(task *processor.Task) (*processor.TaskResult_, error) {
 	taskResult := NewTaskResult_()
 	taskResult.Data, err = data.ToString()
 	if err != nil {
-		taskResult.TaskStatus = processor.TaskStatus_FAILED
+		taskResult.TaskStatus = processor.TTaskStatus_FAILED
 		return taskResult, err
 	}
 	if taskResult.GetData() == "Infinity" {
-		taskResult.TaskStatus = processor.TaskStatus_FAILED
+		taskResult.TaskStatus = processor.TTaskStatus_FAILED
 		return taskResult, errors.New("js code error")
 	}
-	taskResult.TaskStatus = processor.TaskStatus_SUCCESS
+	taskResult.TaskStatus = processor.TTaskStatus_SUCCESS
 	return taskResult, nil
 }

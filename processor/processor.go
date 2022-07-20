@@ -5,18 +5,17 @@ import (
 )
 
 type Processor interface {
-	Run(data *processor.Task) (*processor.TaskResult_, error)
+	Run(data *processor.TTask) (*processor.TTaskResult_, error)
 	Name() string
 }
 
-var NewTask = processor.NewTask
-var NewHtmlProcessor = processor.NewHtmlBlock
-var NewHtmlEXtractResult_ = processor.NewHtmlEXtractResult_
-var NewItemField = processor.NewItemField
+var NewTask = processor.NewTTask
 
-func NewTaskResult_() *processor.TaskResult_ {
-	t := processor.NewTaskResult_()
+
+func NewTaskResult_() *processor.TTaskResult_ {
+	t := processor.NewTTaskResult_()
 	t.Extra = make(map[string]string)
-    t.TaskStatus = processor.TaskStatus_SUCCESS
+    t.TaskStatus = processor.TTaskStatus_SUCCESS
 	return t
 }
+

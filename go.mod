@@ -14,7 +14,7 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v1.2.1
 	github.com/robertkrimen/otto v0.0.0-20211024170158-b87d35c0b86f
-	github.com/wangyihit/thrift_idl v0.0.8
+	github.com/wangyihit/thrift_idl v0.0.11
 	go.uber.org/zap v1.13.0
 	gopkg.in/olivere/elastic.v5 v5.0.82
 	gopkg.in/redis.v3 v3.6.4
